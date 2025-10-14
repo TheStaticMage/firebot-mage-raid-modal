@@ -1,0 +1,77 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$ctrl.dismiss()"><span>&times;</span></button>
+    <h4 class="modal-title">Raid</h4>
+</div>
+<div class="modal-body" style="display: flex; flex-direction: column;">
+    <h3>Select Target</h3>
+    <dropdown-select options="$ctrl.targetTypeOptions" selected="$ctrl.selectTargetType" on-update="$ctrl.onTargetTypeChange()"></dropdown-select>
+
+    <div ng-if="$ctrl.selectTargetType === 'category'" class="mt-8" style="width: 100%; display: block;">
+        <div>
+            <div class="muted" style="font-size: 13px; text-transform: uppercase; font-weight: 200;">Current Category</div>
+            <div style="font-size: 16px;">{{$ctrl.currentCategoryName}}</div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': $ctrl.hasValidationError}" style="width: 100%; margin-top: 15px;" ng-if="$ctrl.selectTargetType === 'username'">
+    <ui-select ng-model="$ctrl.data.model" theme="bootstrap" spinner-enabled="true" on-select="$ctrl.viewerSelected()">
+            <ui-select-match placeholder="{{$ctrl.inputPlaceholder}}">
+                <div>{{$select.selected.displayName}}<span ng-if="$select.selected.displayName.toLowerCase() !== $select.selected.username.toLowerCase()" class="muted" style="vertical-align: bottom;">&nbsp;({{$select.selected.username}})</span></div>
+            </ui-select-match>
+            <ui-select-choices minimum-input-length="1" repeat="channel in $ctrl.channels | filter: $select.search" refresh="$ctrl.searchForChannels($select.search)" refresh-delay="400" style="position:relative;">
+                <div style="height: 35px; display:flex; flex-direction: row; align-items: center;">
+                    <img style="height: 30px; width: 30px; border-radius: 5px; margin-right:10px;" ng-src="{{channel.avatarUrl || $ctrl.defaultAvatar}}">
+                    <div ng-style="channel.isLive && {'font-weight': 500} || {'font-weight': 100, 'text-decoration': 'line-through'}" style="font-size: 17px;">
+                        {{channel.displayName}}
+                        <span ng-if="channel.displayName.toLowerCase() !== channel.username.toLowerCase()" class="muted"> ({{channel.username}})</span>
+                    </div>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+    <span id="helpBlock" class="help-block" ng-show="$ctrl.hasValidationError">{{$ctrl.validationText}}</span>
+    </div>
+
+    <div class="form-group" style="width: 100%; margin-top: 15px; display: block;" ng-if="$ctrl.selectTargetType === 'category' || $ctrl.selectTargetType === 'followed'">
+    <ui-select ng-model="$ctrl.data.model" theme="bootstrap" spinner-enabled="true" on-select="$ctrl.viewerSelected()">
+            <ui-select-match placeholder="{{$ctrl.channels.length == 0 ? 'Loading channels...' : $ctrl.inputPlaceholder}}">
+                <div>{{$select.selected.displayName}}<span ng-if="$select.selected.displayName.toLowerCase() !== $select.selected.username.toLowerCase()" class="muted" style="vertical-align: bottom;">&nbsp;({{$select.selected.username}})</span></div>
+            </ui-select-match>
+            <ui-select-choices minimum-input-length="1" repeat="channel in $ctrl.channels" style="position:relative;">
+                <div style="padding: 5px; border-bottom: 1px solid #ddd; cursor: pointer; width: 100%; display: block; box-sizing: border-box;">
+                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-weight: 500; font-size: 17px;">
+                            {{channel.displayName}}
+                        </div>
+                        <div style="font-weight: 200; font-size: 16px; color: #ddd;">
+                            <span title="Mature content" ng-if="channel.isMature">&#x26A0;&nbsp;</span>
+                            ({{channel.viewers || 0}}) [{{channel.uptimeString || "N/A"}}]
+                        </div>
+                    </div>
+                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-weight: 200; font-size: 14px; color: #aaa;">
+                            <span ng-if="channel.gameName">{{channel.gameName}}</span>
+                            <span ng-if="!channel.gameName">No Game</span>
+                        </div>
+                        <div style="font-weight: 200; font-size: 14px; color: #aaa;">
+                            <span ng-if="channel.language">{{channel.language}}</span>
+                            <span ng-if="!channel.language">No Language</span>
+                        </div>
+                    </div>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div class="form-group" style="width: 100%; margin-top: 15px; display: block;" ng-if="!$ctrl.streamerIsOnline">
+        <div>
+            <label class="control-label" style="margin:0;">Confirm Offline Raid</label>
+            <p class="help-block">It appears that you are not streaming right now. Confirm that you want to initiate a raid anyway.</p>
+        </div>
+        <div>
+            <toggle-button toggle-model="$ctrl.data.confirmOfflineRaid" auto-update-value="true" font-size="32"></toggle-button>
+        </div>
+    </div>
+</div>
+<div class="modal-footer" style="display: flex; justify-content: flex-end;">
+    <button type="button" class="btn btn-default" ng-click="$ctrl.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.initiateRaidOut()" ng-disabled="!$ctrl.isActionEnabled || (!$ctrl.streamerIsOnline && !$ctrl.confirmOfflineRaid)">Initiate Raid</button>
+</div>

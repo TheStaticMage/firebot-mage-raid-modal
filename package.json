@@ -1,0 +1,38 @@
+{
+    "name": "firebot-mage-raid-modal",
+    "scriptOutputName": "firebot-mage-raid-modal",
+    "version": "0.0.1",
+    "description": "TheStaticMage's utility library for Firebot Custom Scripts.",
+    "main": "",
+    "scripts": {
+        "build": "npm run build:version && npm run build:webpack",
+        "build:dev": "npm run build:version && npm run build:webpack && npm run copy",
+        "build:version": "node ./scripts/update-version.js",
+        "build:webpack": "webpack",
+        "copy": "node ./scripts/copy-build.js",
+        "prepare": "",
+        "test": "jest --coverage",
+        "jest": "jest --coverage"
+    },
+    "author": "thestaticmage",
+    "license": "GNU3",
+    "devDependencies": {
+        "@crowbartools/firebot-custom-scripts-types": "github:TheStaticMage/firebot-custom-scripts-types#running",
+        "@eslint/js": "^9.28.0",
+        "@stylistic/eslint-plugin": "^4.4.1",
+        "@types/jest": "^30.0.0",
+        "html-loader": "^5.1.0",
+        "jest": "^30.0.4",
+        "terser-webpack-plugin": "^5.3.10",
+        "ts-jest": "^29.4.0",
+        "ts-loader": "^9.5.1",
+        "typescript": "^5.3.3",
+        "typescript-eslint": "^8.33.1",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^6.0.1"
+    },
+    "dependencies": {
+        "@leeoniya/ufuzzy": "^1.0.19",
+        "closest-match": "^1.3.3"
+    }
+}

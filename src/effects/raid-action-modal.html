@@ -1,0 +1,17 @@
+<eos-container header="Trigger Actions" pad-top="true">
+    <dropdown-select options="{ default: 'Default', custom: 'Custom'}" selected="effect.listType" on-update="listTypeChanged()"></dropdown-select>
+</eos-container>
+
+<eos-container header="Custom Effect List" ng-if="effect.listType === 'custom'" pad-top="true" pad-bottom="true">
+    <p class="muted">TIP: You can use <code><b>$raidQuickActionTargetUsername</b></code> and <code><b>$raidQuickActionTargetUserDisplayName</b></code> in effects.</p>
+    <effect-list effects="effect.effectList"
+        trigger="quick_action"
+        trigger-meta="triggerMeta"
+        update="effectListUpdated(effects)"
+        modalId="raidActionEffectListModal"
+    ></effect-list>
+</eos-container>
+
+<eos-container header="Default Action" ng-if="effect.listType === 'default'" pad-top="true" pad-bottom="true">
+    <p class="muted">The default action is to initiate a raid to the selected user.</p>
+</eos-container>
