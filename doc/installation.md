@@ -1,22 +1,32 @@
-# Installation
+# Installation Guide
 
-The script needs to be installed like any other Firebot startup script:
+This plugin is installed like any other Firebot startup script.
 
-1. From the latest [Release](https://github.com/TheStaticMage/firebot-mage-raid-modal/releases), download `firebot-mage-raid-modal-<version>.js` into your Firebot scripts directory (File &gt; Open Data Folder, then select the "scripts" directory).
+## Installation Steps
 
-2. Enable custom scripts in Firebot (Settings &gt; Scripts).
+1. Download `firebot-mage-raid-modal-<version>.js` from the latest [Release](https://github.com/TheStaticMage/firebot-mage-raid-modal/releases)
 
-3. Add the `Firebot-Mage-Raid-Modal-<version>.js` script that you just added as a startup script (Settings &gt; Scripts &gt; Manage Startup Scripts &gt; Add New Script).
+2. Copy the file to your Firebot scripts directory
+   - In Firebot, go to **File** > **Open Data Folder**, then select the **scripts** folder
 
-4. Restart Firebot.
+3. Enable custom scripts in Firebot
+   - Go to **Settings** > **Scripts** and ensure custom scripts are enabled
 
-After installation, it will not be immediately apparent that you have installed the script. However, the following resources will now be available:
+4. Add the script as a startup script
+   - Go to **Settings** > **Scripts** > **Manage Startup Scripts** > **Add New Script**
+   - Select `firebot-mage-raid-modal-<version>.js` from the dropdown
 
-- The **Raid Action Modal** effect
-- The **$raidModalActionTargetUserDisplayName** variable
-- The **$raidModalActionTargetUsername** variable
-- The **Raid Modal** UI extension, displayed with you trigger the Raid Action Modal effect
+5. Restart Firebot
+
+## What Gets Installed
+
+After installation, the following resources will be available in Firebot:
+
+- **Raid Action Modal** effect - Available for all events and effect lists
+- **$raidModalActionTargetUserDisplayName** variable - Display name of the selected raid target
+- **$raidModalActionTargetUsername** variable - Username of the selected raid target
+- **Raid Modal** UI extension - Displays when you trigger the Raid Action Modal effect
 
 ## Requirements
 
-This script requires Firebot 5.65 or later. The script will fail to initialize if you are running an older version of Firebot.
+This plugin requires **Firebot 5.65 or higher**. The plugin will fail to initialize if you are running an older version of Firebot.
