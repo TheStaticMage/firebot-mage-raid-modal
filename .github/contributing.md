@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-## Welcome!
+## Welcome
 
 Thank you for your interest in contributing.
 
@@ -24,7 +24,7 @@ There is no specific formatting requirement for commit messages. Please use a de
 ## Pull Requests
 
 - Please use the provided Pull Request template. I may close any PRs that do not use the template or are missing necessary sections.
-- When you are ready for a review, on your PR under "Reviewers" add TheStaticMage.
+- When you are ready for a review, add TheStaticMage as a reviewer on your PR.
 
 ### Title
 
