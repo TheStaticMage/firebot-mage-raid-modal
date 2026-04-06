@@ -6,16 +6,16 @@ function raidModalUiExtensionServiceFunction(backendCommunicator: any, utilitySe
     const service: any = {};
 
     type effectModel = {
-        listType: 'default' | 'preset' | 'custom';
+        listType: "default" | "preset" | "custom";
         effectList?: Firebot.EffectType<any>[];
         presetListId?: string;
         presetArgValues?: Record<string, string>;
     };
 
-    backendCommunicator.on("raid-modal:show-raid-modal", (data: { trigger: Trigger, effectData: effectModel }) => {
+    backendCommunicator.on("raid-modal:show-raid-modal", (data: { trigger: Trigger; effectData: effectModel }) => {
         utilityService.showModal({
             component: "raidModalComponent",
-            size: 'sm',
+            size: "sm",
             resolveObj: {
                 trigger: () => data.trigger,
                 effectData: () => data.effectData

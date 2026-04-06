@@ -1,5 +1,3 @@
-import raidActionModalEffect from './raid-action-modal';
+import raidActionModalEffect from "./raid-action-modal";
 
-export default [
-    raidActionModalEffect
-];
+export default [raidActionModalEffect];

@@ -4,7 +4,7 @@ import raidModalTemplate from "./raid-modal.html";
 
 type Scope = ng.IScope & {
     $ctrl: any;
-}
+};
 
 export const raidModalComponent: AngularJsComponent = {
     name: "raidModalComponent",
@@ -32,7 +32,7 @@ export const raidModalComponent: AngularJsComponent = {
         $ctrl.selectTargetType = "category";
         $ctrl.streamerIsOnline = false;
         $ctrl.streamerUsername = "";
-        $ctrl.targetTypeOptions = { category: 'Same Category', followed: 'Followed Channels', username: 'Username' };
+        $ctrl.targetTypeOptions = { category: "Same Category", followed: "Followed Channels", username: "Username" };
         $ctrl.validationText = "";
 
         // Passed through from the effect
@@ -40,64 +40,67 @@ export const raidModalComponent: AngularJsComponent = {
         $ctrl.effect = null;
 
         // Watch for changes to $ctrl.data.confirmOfflineRaid and sync with $ctrl.confirmOfflineRaid
-        $scope.$watch(() => $ctrl.data.confirmOfflineRaid, function(newVal: any) {
-            $ctrl.confirmOfflineRaid = newVal;
-        });
+        $scope.$watch(
+            () => $ctrl.data.confirmOfflineRaid,
+            function (newVal: any) {
+                $ctrl.confirmOfflineRaid = newVal;
+            }
+        );
 
         $ctrl.logger = (prio: string, message: string) => {
-            backendCommunicator.send('raid-modal:logger', {prio, message});
+            backendCommunicator.send("raid-modal:logger", { prio, message });
         };
 
         $ctrl.$onInit = () => {
             if ($ctrl.resolve && $ctrl.resolve.trigger && $ctrl.resolve.effectData) {
                 $ctrl.trigger = $ctrl.resolve.trigger;
                 $ctrl.effect = $ctrl.resolve.effectData;
-                $ctrl.logger('debug', `Raid modal opened via effect. Trigger type: ${$ctrl.trigger.type || 'N/A'}`);
+                $ctrl.logger("debug", `Raid modal opened via effect. Trigger type: ${$ctrl.trigger.type || "N/A"}`);
             } else {
-                $ctrl.logger('error', `Incorrect data passed to raid modal component. resolve=${$ctrl.resolve ? 'defined' : 'undefined'}, trigger=${$ctrl.resolve?.trigger ? 'defined' : 'undefined'}, effectData=${$ctrl.resolve?.effectData ? 'defined' : 'undefined'}`);
+                $ctrl.logger(
+                    "error",
+                    `Incorrect data passed to raid modal component. resolve=${$ctrl.resolve ? "defined" : "undefined"}, trigger=${$ctrl.resolve?.trigger ? "defined" : "undefined"}, effectData=${$ctrl.resolve?.effectData ? "defined" : "undefined"}`
+                );
                 ngToast.create({
-                    className: 'danger',
-                    content: 'No raid configuration data was provided. Please check the effect configuration.'
+                    className: "danger",
+                    content: "No raid configuration data was provided. Please check the effect configuration."
                 });
                 $ctrl.dismiss();
                 return;
             }
 
-            backendCommunicator.fireEventAsync("get-channel-info")
-                .then((channelInfo: any) => {
-                    if (channelInfo && channelInfo.gameId) {
-                        $ctrl.currentCategoryId = channelInfo.gameId;
-                        $ctrl.onTargetTypeChange();
-                        $ctrl.logger('debug', `Streamer current category ID: ${$ctrl.currentCategoryId}`);
+            backendCommunicator.fireEventAsync("get-channel-info").then((channelInfo: any) => {
+                if (channelInfo && channelInfo.gameId) {
+                    $ctrl.currentCategoryId = channelInfo.gameId;
+                    $ctrl.onTargetTypeChange();
+                    $ctrl.logger("debug", `Streamer current category ID: ${$ctrl.currentCategoryId}`);
 
-                        backendCommunicator.fireEventAsync("get-twitch-game", $ctrl.currentCategoryId)
-                            .then((gameInfo: any) => {
-                                if (gameInfo && gameInfo.name) {
-                                    $ctrl.currentCategoryName = gameInfo.name;
-                                    $ctrl.logger('debug', `Streamer current category name: ${$ctrl.currentCategoryName}`);
-                                } else {
-                                    $ctrl.currentCategoryName = `Unknown Category (#${channelInfo.gameId})`;
-                                    $ctrl.logger('debug', `Could not retrieve current category name for ID ${$ctrl.currentCategoryId}`);
-                                }
-                            });
-                    } else {
-                        ngToast.create({
-                            className: 'danger',
-                            content: `Could not retrieve current category information.`
-                        });
-                        $ctrl.logger('warn', `Could not retrieve current category information for the streamer.`);
-                    }
-                });
+                    backendCommunicator.fireEventAsync("get-twitch-game", $ctrl.currentCategoryId).then((gameInfo: any) => {
+                        if (gameInfo && gameInfo.name) {
+                            $ctrl.currentCategoryName = gameInfo.name;
+                            $ctrl.logger("debug", `Streamer current category name: ${$ctrl.currentCategoryName}`);
+                        } else {
+                            $ctrl.currentCategoryName = `Unknown Category (#${channelInfo.gameId})`;
+                            $ctrl.logger("debug", `Could not retrieve current category name for ID ${$ctrl.currentCategoryId}`);
+                        }
+                    });
+                } else {
+                    ngToast.create({
+                        className: "danger",
+                        content: `Could not retrieve current category information.`
+                    });
+                    $ctrl.logger("warn", `Could not retrieve current category information for the streamer.`);
+                }
+            });
 
-            backendCommunicator.fireEventAsync("get-stream-info")
-                .then((streamInfo: any) => {
-                    if (streamInfo && streamInfo.isLive) {
-                        $ctrl.streamerIsOnline = true;
-                    } else {
-                        $ctrl.streamerIsOnline = false;
-                    }
-                    $ctrl.logger('debug', `Streamer is currently ${$ctrl.streamerIsOnline ? 'online' : 'offline'}.`);
-                });
+            backendCommunicator.fireEventAsync("get-stream-info").then((streamInfo: any) => {
+                if (streamInfo && streamInfo.isLive) {
+                    $ctrl.streamerIsOnline = true;
+                } else {
+                    $ctrl.streamerIsOnline = false;
+                }
+                $ctrl.logger("debug", `Streamer is currently ${$ctrl.streamerIsOnline ? "online" : "offline"}.`);
+            });
         };
 
         $ctrl.viewerSelected = function () {
@@ -143,14 +146,14 @@ export const raidModalComponent: AngularJsComponent = {
                     break;
                 default:
                     ngToast.create({
-                        className: 'danger',
+                        className: "danger",
                         content: `Invalid target type selected.`
                     });
                     break;
             }
         };
 
-        $ctrl.formatUptime = function(uptime: number) {
+        $ctrl.formatUptime = function (uptime: number) {
             const hours = Math.floor(uptime / 3600);
             const minutes = Math.floor((uptime % 3600) / 60);
             const parts: string[] = [];
@@ -160,14 +163,14 @@ export const raidModalComponent: AngularJsComponent = {
             if (minutes > 0 || hours === 0) {
                 parts.push(`${minutes}m`);
             }
-            return parts.join('');
+            return parts.join("");
         };
 
         $ctrl.sortAndFormatChannels = function (channels: any[]) {
             if (!channels || channels.length === 0) {
                 ngToast.create({
-                    className: 'danger',
-                    content: 'No channels found.'
+                    className: "danger",
+                    content: "No channels found."
                 });
                 return [];
             }
@@ -180,7 +183,7 @@ export const raidModalComponent: AngularJsComponent = {
             });
 
             channels.forEach((channel: any) => {
-                if (typeof channel.uptime === 'number' && channel.uptime > 0) {
+                if (typeof channel.uptime === "number" && channel.uptime > 0) {
                     channel.uptimeString = $ctrl.formatUptime(channel.uptime);
                 } else {
                     channel.uptimeString = "N/A";
@@ -190,21 +193,20 @@ export const raidModalComponent: AngularJsComponent = {
             return channels;
         };
 
-        $ctrl.searchForChannels = function(query: string) {
+        $ctrl.searchForChannels = function (query: string) {
             if (query == null || query.trim() === "" || query.trim().length < 3) {
                 return;
             }
-            backendCommunicator.fireEventAsync("search-twitch-channels", query)
-                .then((channels: any[]) => {
-                    $ctrl.channels = $ctrl.sortAndFormatChannels(channels);
-                });
+            backendCommunicator.fireEventAsync("search-twitch-channels", query).then((channels: any[]) => {
+                $ctrl.channels = $ctrl.sortAndFormatChannels(channels);
+            });
         };
 
         $ctrl.populateChannelsByCategory = function () {
             if ($ctrl.currentCategoryId === -1) {
                 ngToast.create({
-                    className: 'danger',
-                    content: 'Your current category is not known. Raid by category not possible.'
+                    className: "danger",
+                    content: "Your current category is not known. Raid by category not possible."
                 });
                 return;
             }
@@ -213,49 +215,47 @@ export const raidModalComponent: AngularJsComponent = {
             $ctrl.isActionEnabled = false;
             const filter = { game: $ctrl.currentCategoryId.toString() };
 
-            backendCommunicator.fireEventAsync("raid-modal:get-streams", filter, false)
-                .then((channels: any[]) => {
-                    $ctrl.channels = $ctrl.sortAndFormatChannels(channels);
-                    if ($ctrl.channels.length > 0) {
-                        $ctrl.inputPlaceholder = "Select channel to raid...";
-                    } else {
-                        $ctrl.inputPlaceholder = "No channels found in this category.";
-                    }
-                });
+            backendCommunicator.fireEventAsync("raid-modal:get-streams", filter, false).then((channels: any[]) => {
+                $ctrl.channels = $ctrl.sortAndFormatChannels(channels);
+                if ($ctrl.channels.length > 0) {
+                    $ctrl.inputPlaceholder = "Select channel to raid...";
+                } else {
+                    $ctrl.inputPlaceholder = "No channels found in this category.";
+                }
+            });
         };
 
         $ctrl.populateChannelsByFollowed = function () {
             $ctrl.channels = [];
             $ctrl.isActionEnabled = false;
 
-            backendCommunicator.fireEventAsync("raid-modal:get-followed-streams")
-                .then((channels: any[]) => {
-                    $ctrl.channels = $ctrl.sortAndFormatChannels(channels);
-                    if ($ctrl.channels.length > 0) {
-                        $ctrl.inputPlaceholder = "Select channel to raid...";
-                    } else {
-                        $ctrl.inputPlaceholder = "No followed channels are online.";
-                    }
-                });
+            backendCommunicator.fireEventAsync("raid-modal:get-followed-streams").then((channels: any[]) => {
+                $ctrl.channels = $ctrl.sortAndFormatChannels(channels);
+                if ($ctrl.channels.length > 0) {
+                    $ctrl.inputPlaceholder = "Select channel to raid...";
+                } else {
+                    $ctrl.inputPlaceholder = "No followed channels are online.";
+                }
+            });
         };
 
-        $ctrl.initiateRaidOut = function() {
+        $ctrl.initiateRaidOut = function () {
             if (!$ctrl.data.model.username || $ctrl.data.model.username.trim().length < 1) {
                 ngToast.create({
-                    className: 'danger',
+                    className: "danger",
                     content: `Please select a target channel.`
                 });
-                $ctrl.logger('warn', `Attempted to initiate raid with no target username specified.`);
+                $ctrl.logger("warn", `Attempted to initiate raid with no target username specified.`);
                 return;
             }
 
             const channel = $ctrl.channels.find((c: any) => c.username === $ctrl.data.model.username.trim());
             if (!channel || !channel.isLive) {
                 ngToast.create({
-                    className: 'danger',
+                    className: "danger",
                     content: `The selected channel is not valid or not live.`
                 });
-                $ctrl.logger('warn', `Attempted to initiate raid to invalid or offline channel: ${$ctrl.data.model.username}`);
+                $ctrl.logger("warn", `Attempted to initiate raid to invalid or offline channel: ${$ctrl.data.model.username}`);
                 return;
             }
 
@@ -272,20 +272,20 @@ export const raidModalComponent: AngularJsComponent = {
                 effects: $ctrl.effect.effectList
             };
 
-            if ($ctrl.effect.listType === 'default') {
-                $ctrl.logger('debug', `Using default effect list for raid initiation.`);
+            if ($ctrl.effect.listType === "default") {
+                $ctrl.logger("debug", `Using default effect list for raid initiation.`);
                 req.effects = {
                     list: [
                         {
-                            type: 'firebot:chat-feed-alert',
+                            type: "firebot:chat-feed-alert",
                             active: true,
-                            icon: 'far fa-rocket',
+                            icon: "far fa-rocket",
                             message: `Raid initiated! Initiating raid to ${channel.displayName}...`
                         },
                         {
-                            type: 'firebot:raid',
+                            type: "firebot:raid",
                             active: true,
-                            action: 'Raid Channel',
+                            action: "Raid Channel",
                             username: channel.username
                         }
                     ]
@@ -295,39 +295,40 @@ export const raidModalComponent: AngularJsComponent = {
             const count = req.effects.list ? req.effects.list.length : 0;
             if (count === 0) {
                 ngToast.create({
-                    className: 'danger',
+                    className: "danger",
                     content: `Failed to initiate raid: No actions were configured in the effect.`
                 });
-                $ctrl.logger('error', `Failed to initiate raid: No actions were configured in the effect.`);
+                $ctrl.logger("error", `Failed to initiate raid: No actions were configured in the effect.`);
                 return;
             }
 
-            $ctrl.logger('info', `Initiating raid to ${channel.displayName} (ID: ${channel.id}) with ${count} configured effect(s).`);
-            backendCommunicator.fireEventAsync("raid-modal:run-effect-list", req)
+            $ctrl.logger("info", `Initiating raid to ${channel.displayName} (ID: ${channel.id}) with ${count} configured effect(s).`);
+            backendCommunicator
+                .fireEventAsync("raid-modal:run-effect-list", req)
                 .then((result: any) => {
                     if (result && result.success) {
                         ngToast.create({
-                            className: 'success',
+                            className: "success",
                             content: `Raid to ${channel.displayName} initiated successfully!`
                         });
 
                         $ctrl.close();
-                        $ctrl.logger('info', `Raid to ${channel.displayName} initiated successfully!`);
+                        $ctrl.logger("info", `Raid to ${channel.displayName} initiated successfully!`);
                         return;
                     }
 
                     ngToast.create({
-                        className: 'danger',
+                        className: "danger",
                         content: `Failed to initiate raid: An unknown error occurred.`
                     });
-                    $ctrl.logger('error', `Failed to initiate raid to ${channel.displayName}: An unknown error occurred.`);
+                    $ctrl.logger("error", `Failed to initiate raid to ${channel.displayName}: An unknown error occurred.`);
                 })
                 .catch((error: any) => {
                     ngToast.create({
-                        className: 'danger',
-                        content: `Failed to initiate raid: ${error.message || 'Unknown error occurred.'}`
+                        className: "danger",
+                        content: `Failed to initiate raid: ${error.message || "Unknown error occurred."}`
                     });
-                    $ctrl.logger('error', `Failed to initiate raid to ${channel.displayName}: ${error.message || 'Unknown error occurred.'}`);
+                    $ctrl.logger("error", `Failed to initiate raid to ${channel.displayName}: ${error.message || "Unknown error occurred."}`);
                 });
         };
     }

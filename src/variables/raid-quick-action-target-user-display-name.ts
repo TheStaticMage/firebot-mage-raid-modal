@@ -1,7 +1,7 @@
-import { ReplaceVariable } from '@crowbartools/firebot-custom-scripts-types/types/modules/replace-variable-manager';
-import { Trigger } from '@crowbartools/firebot-custom-scripts-types/types/triggers';
+import { ReplaceVariable } from "@crowbartools/firebot-custom-scripts-types/types/modules/replace-variable-manager";
+import { Trigger } from "@crowbartools/firebot-custom-scripts-types/types/triggers";
 
-const model : ReplaceVariable = {
+const model: ReplaceVariable = {
     definition: {
         handle: "raidModalActionTargetUserDisplayName",
         usage: "raidModalActionTargetUserDisplayName",
