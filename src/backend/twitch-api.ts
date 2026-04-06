@@ -1,4 +1,4 @@
-import { HelixStreamFilter } from '@twurple/api';
+import { HelixStreamFilter } from "@twurple/api";
 import { firebot } from "../main";
 
 class TwitchBackendAPI {
@@ -6,7 +6,6 @@ class TwitchBackendAPI {
         const { frontendCommunicator, twitchApi } = firebot.modules;
         const streamerClient = twitchApi.getClient();
 
-        // eslint-disable-next-line @typescript-eslint/no-inferrable-types
         frontendCommunicator.onAsync("raid-modal:get-streams", async (filter: HelixStreamFilter, includeStreamer = false, limit: number = 50) => {
             const paginatedRequest = streamerClient.streams.getStreamsPaginated(filter); // Returns from largest to smallest number of viewers
             const results = [];
@@ -33,7 +32,6 @@ class TwitchBackendAPI {
             return results;
         });
 
-        // eslint-disable-next-line @typescript-eslint/no-inferrable-types
         frontendCommunicator.onAsync("raid-modal:get-followed-streams", async (limit: number = 50) => {
             const streamerChannelId = firebot.firebot.accounts.streamer.userId;
             const paginatedRequest = streamerClient.streams.getFollowedStreamsPaginated(streamerChannelId);

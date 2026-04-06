@@ -4,18 +4,18 @@ class LoggerHandler {
     registerHandlers() {
         const { frontendCommunicator } = firebot.modules;
 
-        frontendCommunicator.on("raid-modal:logger", ({prio, message}: {prio: 'debug' | 'info' | 'warn' | 'error', message: string}) => {
+        frontendCommunicator.on("raid-modal:logger", ({ prio, message }: { prio: "debug" | "info" | "warn" | "error"; message: string }) => {
             switch (prio) {
-                case 'debug':
+                case "debug":
                     logger.debug(message);
                     break;
-                case 'info':
+                case "info":
                     logger.info(message);
                     break;
-                case 'warn':
+                case "warn":
                     logger.warn(message);
                     break;
-                case 'error':
+                case "error":
                     logger.error(message);
                     break;
                 default:

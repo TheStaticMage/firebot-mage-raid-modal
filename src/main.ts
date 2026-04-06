@@ -1,16 +1,16 @@
-import { Firebot, RunRequest } from '@crowbartools/firebot-custom-scripts-types';
-import { Logger } from '@crowbartools/firebot-custom-scripts-types/types/modules/logger';
-import { backendEffectRunner } from './backend/effect-runner';
-import { loggerHandler } from './backend/logger';
-import { twitchBackendAPI } from './backend/twitch-api';
-import effects from './effects/index';
-import { raidModalUiExtension } from './ui-extension/index';
-import replaceVariables from './variables/index';
+import { Firebot, RunRequest } from "@crowbartools/firebot-custom-scripts-types";
+import { Logger } from "@crowbartools/firebot-custom-scripts-types/types/modules/logger";
+import { backendEffectRunner } from "./backend/effect-runner";
+import { loggerHandler } from "./backend/logger";
+import { twitchBackendAPI } from "./backend/twitch-api";
+import effects from "./effects/index";
+import { raidModalUiExtension } from "./ui-extension/index";
+import replaceVariables from "./variables/index";
 
 export let firebot: RunRequest<any>;
 export let logger: LogWrapper;
 
-const scriptVersion = '0.0.1';
+const scriptVersion = "0.0.1";
 
 const script: Firebot.CustomScript<any> = {
     getScriptManifest: () => {
@@ -36,9 +36,9 @@ const script: Firebot.CustomScript<any> = {
         }
 
         const firebotVersion = runRequest.firebot.version;
-        const firebotParts = firebotVersion.split('.');
+        const firebotParts = firebotVersion.split(".");
         const majorVersion = parseInt(firebotParts[0], 10);
-        const minorVersion = parseInt(firebotParts[1] || '0', 10);
+        const minorVersion = parseInt(firebotParts[1] || "0", 10);
         if (isNaN(majorVersion) || isNaN(minorVersion) || majorVersion < 5 || (majorVersion === 5 && minorVersion < 65)) {
             const { frontendCommunicator } = runRequest.modules;
             frontendCommunicator.send("error", `The installed version of Mage Raid Modal requires Firebot 5.65 or later. You are running Firebot ${firebotVersion}. Please update Firebot to use this plugin.`);

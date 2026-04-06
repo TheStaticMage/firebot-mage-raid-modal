@@ -1,9 +1,9 @@
-import { Firebot } from '@crowbartools/firebot-custom-scripts-types';
-import { firebot } from '../main';
-import raidActionModalTemplate from './raid-action-modal.html';
+import { Firebot } from "@crowbartools/firebot-custom-scripts-types";
+import { firebot } from "../main";
+import raidActionModalTemplate from "./raid-action-modal.html";
 
 type effectModel = {
-    listType: 'default' | 'custom';
+    listType: "default" | "custom";
     effectList?: { list: any[] };
 };
 
@@ -17,11 +17,11 @@ const model: Firebot.EffectType<effectModel> = {
     },
     optionsTemplate: raidActionModalTemplate,
     getDefaultLabel: (effect: effectModel) => {
-        if (effect.listType === 'default') {
+        if (effect.listType === "default") {
             return "Default: Initiate raid";
-        } else if (effect.listType === 'custom') {
+        } else if (effect.listType === "custom") {
             const count = effect.effectList && effect.effectList.list ? effect.effectList.list.length : 0;
-            return `Custom: ${count} effect${count !== 1 ? 's' : ''}`;
+            return `Custom: ${count} effect${count !== 1 ? "s" : ""}`;
         }
         return "";
     },
@@ -29,17 +29,17 @@ const model: Firebot.EffectType<effectModel> = {
         const errors: string[] = [];
 
         // STAGE 1: VALIDATION - Check for errors without modifying the effect
-        if (effect.listType === 'custom') {
+        if (effect.listType === "custom") {
             const count = effect.effectList && effect.effectList.list ? effect.effectList.list.length : 0;
             if (count === 0) {
-                errors.push('Please add at least one effect to the custom effect list.');
+                errors.push("Please add at least one effect to the custom effect list.");
             }
         }
         // Default mode requires no validation
 
         // STAGE 2: CLEANUP - Only proceed if there are no validation errors
         if (errors.length === 0) {
-            if (effect.listType === 'default') {
+            if (effect.listType === "default") {
                 // For default mode, remove preset and custom properties
                 delete effect.effectList;
             }
@@ -49,20 +49,20 @@ const model: Firebot.EffectType<effectModel> = {
     },
     optionsController: ($scope: any) => {
         if (!$scope.effect.listType) {
-            $scope.effect.listType = 'default';
+            $scope.effect.listType = "default";
         }
 
         $scope.triggerMeta = {
             eventData: {}
         };
 
-        $scope.listTypeChanged = function() {
+        $scope.listTypeChanged = function () {
             // This function triggers AngularJS digest cycle when listType changes
             // The ng-if conditions in the template will automatically re-evaluate
         };
 
-        $scope.effectListUpdated = function(effects: any[]) {
-            ($scope.effect).effectList = effects;
+        $scope.effectListUpdated = function (effects: any[]) {
+            $scope.effect.effectList = effects;
         };
     },
     onTriggerEvent: async (event) => {
