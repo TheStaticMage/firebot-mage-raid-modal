@@ -1,6 +1,8 @@
 # Firebot Raid Modal
 
-Provides an interactive raid modal interface for selecting raid targets visually instead of typing usernames.
+## Deprecation Notice
+
+This plugin is not tested with Firebot 5.67 or later and will no longer be developed. No support or updates will be provided. Code and documentation remain archived here for reference purposes only.
 
 ## Introduction
 
@@ -14,7 +16,7 @@ This [Firebot](https://firebot.app) plugin provides a user-friendly interactive 
 - :signal_strength: Visual confirmation of channel status (online/offline)
 - :electric_plug: Custom effect execution when a raid target is selected
 - :gear: Easy configuration via Quick Actions
-
+<!--
 ## Quick Start
 
 ### 1. Install the Plugin
@@ -109,3 +111,4 @@ If you use this on your stream, I would appreciate a shout-out. (Appreciated, bu
 - <https://www.twitch.tv/thestaticmage>
 - <https://kick.com/thestaticmage>
 - <https://youtube.com/@thestaticmagerisk>
+-->
